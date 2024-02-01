@@ -12,11 +12,11 @@ import Register from './components/Register/Register';
 
   const returnClarifaiRequestOptions = (imageUrl) => {
     // Your PAT (Personal Access Token) can be found in the portal under Authentification
-  const PAT = '8e2f0ee6cbf74c7085af00c76d09902b';
+  const PAT = 'd86eae173fe9422daa25841f33d6a51c';
   // Specify the correct user_id/app_id pairings
   // Since you're making inferences outside your app's scope
   const USER_ID = 'jamal123';       
-  const APP_ID = 'first';
+  const APP_ID = 'brain';
   // Change these to whatever model and image URL you want to use
   const MODEL_ID = 'face-detection';
   // const MODEL_VERSION_ID = 'aa7f35c01e0642fda5cf400f543e7c40';    
