@@ -68,8 +68,33 @@ class App extends Component {
       box: {},
       route: 'signin',
       isSignedIn: false
+      // user: {
+      //   id: "",
+      //   name: "",
+      //   email: "",
+      //   entries: 0,
+      //   joined: ""
+      // }
     }
   }
+
+  // componentDidMount() {
+  //   fetch('http://localhost:3000/')
+  //   .then(response => response.json())
+  //   .then(console.log)
+  // }
+
+  // loadUser = (data) => {
+  //   this.setState({
+  //     user: {
+  //       id: data.id,
+  //       name: data.name,
+  //       email: data.email,
+  //       entries: data.entries,
+  //       joined: data.joined
+  //     }
+  //   })
+  // }
 
   calculateFaceLocation = (data) => {
 
@@ -99,7 +124,22 @@ onButtonSubmit = () => {
 
   fetch("https://api.clarifai.com/v2/models/" + 'face-detection' + "/outputs", returnClarifaiRequestOptions(this.state.input))
   .then(response => response.json())
-  .then(result => this.displayFaceBox(this.calculateFaceLocation(result)))
+  .then(result => {
+    // if (result) {
+    //   fetch('http://localhost:3000/image', {
+    //     method: 'put',
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: JSON.stringify({
+    //       id: this.state.user.id
+    //     })
+    //   })
+    //   .then( response => response.json())
+    //   .then( count => {
+    //     this.setState(Object.assign(this.state.user, {entries: count}))
+    //   })
+    // } 
+    this.displayFaceBox(this.calculateFaceLocation(result))
+  })
   .catch(error => console.log('error', error));
 }
 
@@ -110,32 +150,39 @@ onRouteChange = (route) => {
   else if( route === 'home') {
     this.setState({isSignedIn: true})
   }
-  this.setState({route: route})
+  this.setState({route: route});
 }
 
 
 
+
   render() {
+
+    const { isSignedIn } = this.state
     return (
       <div className="App">
         <ParticlesBg type="circle" bg={true} />
-        <Navigation isSignedIn={this.state.isSignedIn} onRouteChange={this.onRouteChange}/>
-        { this.state.route === 'home'
+        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
+
+        { this.state.route === 'home' 
         ?
         <div>
-          <Logo />
-          <Rank />
-          <ImageLinkForm  onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
-          <FaceRecognition  imageUrl={this.state.imageUrl} box={this.state.box}/>
-      </div>
+        <Logo />
+        {/* <Rank  name={this.state.user.name} entries={this.state.user.entries}/> */}
+        <Rank name='jamal' entries='0' />
+        <ImageLinkForm  onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
+        <FaceRecognition  imageUrl={this.state.imageUrl} box={this.state.box}/>
+    </div>
+        
         :
         (
-          this.state.route === 'signin'
-          ?
-          <Signin onRouteChange={this.onRouteChange}/> 
-          :
-          <Register onRouteChange={this.onRouteChange}/> 
+          this.state.route === 'signin' ?
+          <Signin onRouteChange={this.onRouteChange} />  
+           :
+           <Register onRouteChange={this.onRouteChange}/>
         )
+              
+       
        
     }
       </div>
@@ -145,3 +192,35 @@ onRouteChange = (route) => {
 }
 
 export default App;
+
+
+
+
+
+//   render() {
+//   return (
+//     <div className="App">
+//       <ParticlesBg type="circle" bg={true} />
+//       <Navigation isSignedIn={this.state.isSignedIn} onRouteChange={this.onRouteChange}/>
+//       { this.state.route === 'signin' 
+//       ?
+//       <div>
+//         <Logo />
+//         {/* <Rank  name={this.state.user.name} entries={this.state.user.entries}/> */}
+//         <Rank name='jamal' entries='0' />
+//         <ImageLinkForm  onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
+//         <FaceRecognition  imageUrl={this.state.imageUrl} box={this.state.box}/>
+//     </div>
+//       :
+//       (
+//         this.state.route === 'signin'
+//         ?
+//         <Signin onRouteChange={this.onRouteChange} /> 
+//         :
+//         <Register onRouteChange={this.onRouteChange} /> 
+//       )
+     
+//   }
+//     </div>
+//   );
+// }
